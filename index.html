@@ -1,17 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BanMuonXem</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Web trôi nổi</title>
+    <style>
+        #web-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #link {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            text-decoration: none;
+            color: #000;
+            background-color: #fff;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div id="content">
-            <!-- Nội dung sẽ được thêm vào đây bằng JavaScript -->
-        </div>
+    <div id="web-container">
+        <a id="link" href="#">Liên kết ngẫu nhiên</a>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const linkElement = document.getElementById('link');
+        const links = [];
+
+        // Thay đổi đường dẫn tệp CSV cho phù hợp
+        fetch('https://docs.google.com/spreadsheets/d/1234567890abcdef/edit?usp=sharing&export=csv', {
+            mode: 'no-cors'
+        })
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                for (const line of lines) {
+                    if (line.trim()) {
+                        links.push(line.trim());
+                    }
+                }
+
+                showRandomLink();
+            });
+
+        function showRandomLink() {
+            if (links.length > 0) {
+                const randomIndex = Math.floor(Math.random() * links.length);
+                const randomLink = links[randomIndex];
+                linkElement.href = randomLink;
+                linkElement.textContent = randomLink;
+            }
+        }
+    </script>
 </body>
 </html>
