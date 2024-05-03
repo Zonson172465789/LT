@@ -1,5 +1,5 @@
 window.onload = function() {
-    fetch('https://docs.google.com/spreadsheets/d/1BjdhXuDmgQvNo0OvXrIONtQz0Ast0-Nz2o2asBuIj5c/edit?usp=sharing')
+    fetch(https://docs.google.com/spreadsheets/d/1BjdhXuDmgQvNo0OvXrIONtQz0Ast0-Nz2o2asBuIj5c/edit?usp=sharing)
         .then(response => response.json())
         .then(data => {
             const contentDiv = document.getElementById('content');
