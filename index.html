@@ -1,70 +1,119 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web trôi nổi</title>
-    <style>
-        #web-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Trôi Nổi</title>
+  <style>
+    body {
+      background-color: red;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        #link {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            text-decoration: none;
-            color: #000;
-            background-color: #fff;
-            padding: 10px 20px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-    </style>
+    #web {
+      background-color: #fff;
+      border: 2px solid gold;
+      padding: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60vw;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    #title {
+      font-size: 24px;
+      font-weight: bold;
+      color: gold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    #links {
+      list-style: none;
+      padding: 0;
+    }
+
+    #links li {
+      margin-bottom: 10px;
+    }
+
+    #links a {
+      display: block;
+      padding: 5px 10px;
+      background-color: #eee;
+      color: gold;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    #close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div id="web-container">
-        <a id="link" href="#">Liên kết ngẫu nhiên</a>
-    </div>
+  <div id="web">
+    <h1 id="title"></h1>
+    <ul id="links"></ul>
+    <button id="close">Đóng</button>
+  </div>
 
-    <script>
-        const linkElement = document.getElementById('link');
-        const links = [];
+  <script>
+    // Lấy dữ liệu từ Google Sheet
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1BjdhXuDmgQvNo0OvXrIONtQz0Ast0-Nz2o2asBuIj5c/edit?usp=sharing';
 
-        // Thay đổi đường dẫn tệp CSV cho phù hợp
-              fetch(https://docs.google.com/spreadsheets/d/1BjdhXuDmgQvNo0OvXrIONtQz0Ast0-Nz2o2asBuIj5c/edit?usp=sharing, {
-            mode: no-cors
-        })
-            .then(response => response.text())
-            .then(data => {
-                const lines = data.split('\n');
-                for (const line of lines) {
-                    if (line.trim()) {
-                        links.push(line.trim());
-                    }
-                }
+    fetch(sheetUrl)
+      .then(response => response.json())
+      .then(data => {
+        const sheetData = data.sheets[0].data;
 
-                showRandomLink();
-            });
+        // Lấy dữ liệu từ Google Sheet
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/1BjdhXuDmgQvNo0OvXrIONtQz0Ast0-Nz2o2asBuIj5c/edit?usp=sharing';
 
-        function showRandomLink() {
-            if (links.length > 0) {
-                const randomIndex = Math.floor(Math.random() * links.length);
-                const randomLink = links[randomIndex];
-                linkElement.href = randomLink;
-                linkElement.textContent = randomLink;
-            }
-        }
-    </script>
-</body>
-</html>
+fetch(sheetUrl)
+  .then(response => response.json())
+  .then(data => {
+    const sheetData = data.sheets[0].data;
+
+    // Lấy tiêu đề ngẫu nhiên từ cột F
+    const randomTitleIndex = Math.floor(Math.random() * sheetData.length);
+    const title = sheetData[randomTitleIndex][5];
+    document.getElementById('title').textContent = title.toUpperCase();
+
+    // Lấy 5 link ngẫu nhiên từ cột D
+    const randomLinks = [];
+    for (let i = 0; i < 5; i++) {
+      const randomLinkIndex = Math.floor(Math.random() * sheetData.length);
+      const link = sheetData[randomLinkIndex][3];
+      if (!randomLinks.includes(link)) {
+        randomLinks.push(link);
+      }
+    }
+
+    // Hiển thị các link
+    const linksList = document.getElementById('links');
+    randomLinks.forEach(link => {
+      const linkElement = document.createElement('a');
+      linkElement.href = link;
+      linkElement.textContent = link;
+      linksList.appendChild(linkElement);
+    });
+  });
+// Thêm chức năng đóng web
+const closeButton = document.getElementById('close');
+closeButton.addEventListener('click', () => {
+  window.close();
+});
+
