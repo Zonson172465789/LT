@@ -1,6 +1,5 @@
 // Lấy dữ liệu từ Google Sheet
 const sheetUrl = 'https://docs.google.com/spreadsheets/d/1BjdhXuDmgQvNo0OvXrIONtQz0Ast0-Nz2o2asBuIj5c/edit?usp=sharing';
-
 fetch(sheetUrl)
   .then(response => response.json())
   .then(data => {
