@@ -1,19 +1,26 @@
-window.onload = function() {
-    fetch(https://docs.google.com/spreadsheets/d/1BjdhXuDmgQvNo0OvXrIONtQz0Ast0-Nz2o2asBuIj5c/edit?usp=sharing)
-        .then(response => response.json())
-        .then(data => {
-            const contentDiv = document.getElementById('content');
-            const randomIndex = Math.floor(Math.random() * data.length);
-            const title = data[randomIndex].title;
-            const links = data[randomIndex].links;
-            contentDiv.innerHTML = `<h1>${title}</h1>`;
-            const ul = document.createElement('ul');
-            links.forEach(link => {
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="${link}">${link}</a>`;
-                ul.appendChild(li);
-            });
-            contentDiv.appendChild(ul);
-        })
-        .catch(error => console.error('Error:', error));
-};
+const linkElement = document.getElementById('link');
+const links = [];
+
+// Đọc dữ liệu từ tệp CSV và lưu trữ vào mảng links
+fetch('data.csv')
+    .then(response => response.text())
+    .then(data => {
+        const lines = data.split('\n');
+        for (const line of lines) {
+            if (line.trim()) {
+                links.push(line.trim());
+            }
+        }
+
+        // Hiển thị liên kết ngẫu nhiên
+        showRandomLink();
+    });
+
+function showRandomLink() {
+    if (links.length > 0) {
+        const randomIndex = Math.floor(Math.random() * links.length);
+        const randomLink = links[randomIndex];
+        linkElement.href = randomLink;
+        linkElement.textContent = randomLink;
+    }
+}
